@@ -26,11 +26,11 @@ public class Network {
         this.metric = metric;
     }
 
-    public Matrix forward(Matrix input) {
+    public Matrix forward(Matrix input, boolean train) {
         Matrix output = input;
 
         for(Layer l : layers) {
-            output = l.forward(output);
+            output = l.forward(output, train);
         }
         return output;
     }
@@ -56,22 +56,22 @@ public class Network {
 
     public void train(Matrix X, Matrix Y, int epochs, int logStep) {
         for(int i=1;i<=epochs;i++) {
-            Matrix P = forward(X);
+            Matrix P = forward(X, true);
 
             double loss = lossFunction.calcLoss(P, Y);
             backward(P, Y);
 
             if(i % logStep == 0 || i == 1 || i == epochs) {
-                System.out.println("Epoch : " + i + " | Loss : " + loss);
+                Matrix pEpoch = predict(X);
+                System.out.println("Epoch : " + i + " / " + epochs + " | Loss : " + loss + " | Accuracy : " + getAccuracy(pEpoch, Y));
             }
-
         }
     }
 
     public Matrix predict(Matrix X) {
         Matrix out = X;
         for(Layer l : layers) {
-            out = l.forward(out);
+            out = l.forward(out, false);
         }
         return out;
     }
