@@ -8,6 +8,8 @@ public class Initializer {
 
     public enum InitType { XAVIER, HE, NORMAL, ZERO }
 
+    private static Random r = new Random();
+
     public static Matrix init(int rowDim, int colDim, InitType type) {
         switch(type) {
             case XAVIER: return xavier(rowDim, colDim);
@@ -20,7 +22,6 @@ public class Initializer {
 
     private static Matrix xavier(int rowDim, int colDim) {
 
-        Random r = new Random();
         double[][] arr = new double[rowDim][colDim];
         double std = Math.sqrt((double) 2 / (rowDim + colDim));
 
@@ -34,7 +35,7 @@ public class Initializer {
     }
 
     private static Matrix he(int rowDim, int colDim) {
-        Random r = new Random();
+
         double[][] arr = new double[rowDim][colDim];
         double std = Math.sqrt((double) 2 / colDim);
 
@@ -52,7 +53,7 @@ public class Initializer {
     }
 
     private static Matrix normal(int rowDim, int colDim) {
-        Random r = new Random();
+
         double[][] arr = new double[rowDim][colDim];
 
         for(int i=0;i<rowDim;i++) {
@@ -70,6 +71,18 @@ public class Initializer {
         for(int i=0;i<rowDim;i++) {
             for(int j=0;j<colDim;j++) {
                 res.getArray()[i][j] = fillValue;
+            }
+        }
+
+        return res;
+    }
+
+    public static Matrix randomBernoulli(int rowDim, int colDim, double prob) {
+        Matrix res = new Matrix(rowDim, colDim);
+
+        for(int i=0;i<rowDim;i++) {
+            for(int j=0;j<colDim;j++) {
+                res.getArray()[i][j] = (r.nextDouble() < prob) ? 1.0 : 0.0;
             }
         }
 

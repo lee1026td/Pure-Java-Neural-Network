@@ -24,7 +24,7 @@ public class MinMaxScalar {
                 if(val > max[i]) max[i] = val;
             }
 
-            System.out.println("feature " + i + " : min = " + min[i] + ", max = " + max[i]);
+            //System.out.println("feature " + i + " : min = " + min[i] + ", max = " + max[i]);
         }
 
         for(int i=0;i<rows;i++) {
